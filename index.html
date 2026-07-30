@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watch & Unlock</title>
+
+<!-- ==== AD SDK SCRIPT (তোমার দেওয়া script) ==== -->
+<script src="//libtl.com/sdk.js" data-zone="11459717" data-sdk="show_11459717"></script>
+
+<style>
+  :root{
+    --red1:#ff1e1e;
+    --red2:#a00000;
+    --glow:#ff3333;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  body{
+    background:#000;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Segoe UI', 'Hind Siliguri', sans-serif;
+    overflow-x:hidden;
+    padding:30px 15px;
+  }
+
+  .wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    max-width:480px;
+    width:100%;
+    text-align:center;
+  }
+
+  /* ---------- TITLE ---------- */
+  .title{
+    font-size:20px;
+    font-weight:800;
+    color:#fff;
+    line-height:1.5;
+    text-shadow:
+      0 0 6px #ff2a2a,
+      0 0 14px #ff2a2a,
+      0 0 26px #ff0000;
+    animation: titleGlow 1.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes titleGlow{
+    from{ text-shadow:0 0 6px #ff2a2a, 0 0 14px #ff2a2a, 0 0 26px #ff0000; }
+    to{   text-shadow:0 0 12px #fff, 0 0 24px #ff4444, 0 0 40px #ff0000; }
+  }
+
+  /* ---------- COUNTER BADGE ---------- */
+  .badge{
+    display:inline-block;
+    padding:6px 18px;
+    border-radius:20px;
+    font-size:15px;
+    font-weight:700;
+    color:#fff;
+    background:linear-gradient(135deg,#ff0000,#7a0000);
+    box-shadow:0 0 10px #ff2a2a, 0 0 20px #ff0000;
+    animation: badgePulse 1.4s ease-in-out infinite;
+    letter-spacing:1px;
+  }
+
+  @keyframes badgePulse{
+    0%,100%{ transform:scale(1); box-shadow:0 0 10px #ff2a2a,0 0 20px #ff0000; }
+    50%{ transform:scale(1.12); box-shadow:0 0 18px #ff5555,0 0 34px #ff0000; }
+  }
+
+  /* ---------- IMAGE BOX (4-corner rounded box like reference) ---------- */
+  .img-box{
+    width:100%;
+    max-width:380px;
+    border-radius:18px;
+    overflow:hidden;
+    border:3px solid #ff2a2a;
+    box-shadow:0 0 20px rgba(255,0,0,0.6);
+    background:#111;
+  }
+  .img-box img{
+    width:100%;
+    display:block;
+  }
+
+  /* ---------- RGB GLOW WRAPPER FOR BUTTON ---------- */
+  .btn-wrapper{
+    position:relative;
+    padding:6px;
+    border-radius:50px;
+  }
+  .btn-wrapper::before{
+    content:"";
+    position:absolute;
+    inset:-4px;
+    border-radius:55px;
+    background:linear-gradient(90deg,#ff0000,#ff9900,#fff700,#00ff6a,#00c3ff,#7a00ff,#ff00c8,#ff0000);
+    background-size:400% 400%;
+    filter:blur(8px);
+    animation: rgbShift 4s linear infinite;
+    z-index:0;
+  }
+  @keyframes rgbShift{
+    0%{background-position:0% 50%;}
+    100%{background-position:400% 50%;}
+  }
+
+  /* ---------- MAIN BUTTON (pill / 4-corner rounded like WATCH NOW ref) ---------- */
+  .action-btn{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    width:280px;
+    max-width:80vw;
+    padding:16px 10px;
+    border:none;
+    border-radius:50px;
+    background:linear-gradient(180deg,#ff3232,#c40000 90%);
+    color:#fff;
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:1px;
+    cursor:pointer;
+    box-shadow:
+      0 6px 0 #7a0000,
+      0 8px 18px rgba(255,0,0,0.55);
+    animation: btnPulse 1.5s ease-in-out infinite;
+    transition:transform .15s ease;
+  }
+  .action-btn:active{
+    transform:translateY(4px);
+    box-shadow:0 2px 0 #7a0000, 0 4px 10px rgba(255,0,0,0.55);
+  }
+
+  @keyframes btnPulse{
+    0%,100%{ box-shadow:0 6px 0 #7a0000, 0 8px 18px rgba(255,0,0,0.55); }
+    50%{ box-shadow:0 6px 0 #7a0000, 0 8px 32px rgba(255,60,60,0.95); }
+  }
+
+  .action-btn .play-icon{
+    width:0; height:0;
+    border-top:11px solid transparent;
+    border-bottom:11px solid transparent;
+    border-left:18px solid #fff;
+  }
+
+  .action-btn .dl-icon{
+    font-size:22px;
+    line-height:1;
+  }
+
+  /* different look when it becomes DOWNLOAD */
+  .action-btn.download-mode{
+    background:linear-gradient(180deg,#00e05a,#008a37 90%);
+    box-shadow:0 6px 0 #00591f, 0 8px 18px rgba(0,224,90,0.6);
+    animation: dlPulse 1.3s ease-in-out infinite;
+  }
+  @keyframes dlPulse{
+    0%,100%{ box-shadow:0 6px 0 #00591f, 0 8px 18px rgba(0,224,90,0.6); }
+    50%{ box-shadow:0 6px 0 #00591f, 0 8px 34px rgba(50,255,140,0.95); }
+  }
+
+  .note{
+    color:#999;
+    font-size:12px;
+    margin-top:-6px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <div class="title">
+      ভিডিওটি দেখার জন্য আপনাকে ৫ টি অ্যাড দেখা লাগবে
+    </div>
+
+    <div class="badge" id="counterBadge">5/5</div>
+
+    <!-- ================================================= -->
+    <!-- এখানে তোমার GitHub এ আপলোড করা ছবির লিংক বসাবে      -->
+    <!-- নিচে JS অংশে IMAGE_URL ভেরিয়েবলে লিংক দিলেই ছবি বসে যাবে -->
+    <!-- ================================================= -->
+    <div class="img-box">
+      <img id="mainImage" src="https://via.placeholder.com/400x300/111111/ff2a2a?text=Your+Image+Here" alt="content preview">
+    </div>
+
+    <div class="btn-wrapper">
+      <button class="action-btn" id="actionBtn">
+        <span class="play-icon" id="btnIcon"></span>
+        <span id="btnText">PLAY NOW</span>
+      </button>
+    </div>
+
+    <div class="note" id="helperNote">প্রতিবার অ্যাড দেখলে কাউন্টার কমবে</div>
+
+  </div>
+
+<script>
+  /* ============================================================
+     এখানে GitHub এর raw image link বসাও:
+     উদাহরণ: https://raw.githubusercontent.com/username/repo/main/image.png
+  ============================================================ */
+  const IMAGE_URL = ""; // <-- এখানে GitHub raw image link বসাও
+
+  if (IMAGE_URL.trim() !== "") {
+    document.getElementById("mainImage").src = IMAGE_URL;
+  }
+
+  /* ============================================================
+     তোমার Telegram চ্যানেল লিংক
+  ============================================================ */
+  const TELEGRAM_LINK = "https://t.me/+ncv03j8ol_AyYzE0";
+
+  const TOTAL_ADS = 5;
+  let remaining = TOTAL_ADS;
+
+  const btn        = document.getElementById("actionBtn");
+  const btnText     = document.getElementById("btnText");
+  const btnIcon     = document.getElementById("btnIcon");
+  const counterBadge= document.getElementById("counterBadge");
+  const helperNote  = document.getElementById("helperNote");
+
+  function updateBadge(){
+    counterBadge.textContent = remaining + "/" + TOTAL_ADS;
+  }
+
+  function switchToDownloadMode(){
+    btn.classList.add("download-mode");
+    btnIcon.classList.remove("play-icon");
+    btnIcon.classList.add("dl-icon");
+    btnIcon.textContent = "⬇";
+    btnText.textContent = "DOWNLOAD";
+    helperNote.textContent = "চ্যানেলে জয়েন করে কনটেন্ট নিতে ক্লিক করুন";
+  }
+
+  function switchToPlayMode(){
+    btn.classList.remove("download-mode");
+    btnIcon.classList.remove("dl-icon");
+    btnIcon.textContent = "";
+    btnIcon.classList.add("play-icon");
+    btnText.textContent = "PLAY NOW";
+    helperNote.textContent = "প্রতিবার অ্যাড দেখলে কাউন্টার কমবে";
+  }
+
+  function handlePlayClick(){
+    // ==== Rewarded interstitial ad call (তোমার দেওয়া কোড) ====
+    if (typeof show_11459717 === "function") {
+      show_11459717().then(() => {
+        // ad successfully watched
+        remaining -= 1;
+        if (remaining < 0) remaining = 0;
+        updateBadge();
+
+        if (remaining === 0) {
+          switchToDownloadMode();
+        }
+      }).catch(() => {
+        // ad failed to load — চাইলে এখানে user কে জানাতে পারো
+        alert("অ্যাড লোড হয়নি, আবার চেষ্টা করুন।");
+      });
+    } else {
+      // যদি ad script লোড না হয় (টেস্টের জন্য fallback)
+      remaining -= 1;
+      if (remaining < 0) remaining = 0;
+      updateBadge();
+      if (remaining === 0) switchToDownloadMode();
+    }
+  }
+
+  function handleDownloadClick(){
+    window.open(TELEGRAM_LINK, "_blank");
+    // চ্যানেলে যাওয়ার পর কাউন্টার আবার 5/5 থেকে শুরু হবে
+    setTimeout(() => {
+      remaining = TOTAL_ADS;
+      updateBadge();
+      switchToPlayMode();
+    }, 1200);
+  }
+
+  btn.addEventListener("click", function(){
+    if (remaining === 0) {
+      handleDownloadClick();
+    } else {
+      handlePlayClick();
+    }
+  });
+
+  updateBadge();
+</script>
+
+</body>
+</html>
