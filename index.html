@@ -87,7 +87,11 @@
   }
   .img-box img{
     width:100%;
+    height:auto;
+    min-height:120px;
     display:block;
+    object-fit:cover;
+    background:#111;
   }
 
   /* ---------- RGB GLOW WRAPPER FOR BUTTON ---------- */
@@ -192,7 +196,7 @@
     <!-- নিচে JS অংশে IMAGE_URL ভেরিয়েবলে লিংক দিলেই ছবি বসে যাবে -->
     <!-- ================================================= -->
     <div class="img-box">
-      <img id="mainImage" src="https://i.postimg.cc/MG76Qxs8/photo-6007974260409831282-x.jpg" alt="content preview">
+      <img id="mainImage" src="https://i.postimg.cc/MG76Qxs8/photo-6007974260409831282-x.jpg" alt="content preview" referrerpolicy="no-referrer" crossorigin="anonymous">
     </div>
 
     <div class="btn-wrapper">
@@ -214,6 +218,11 @@
   if (IMAGE_URL.trim() !== "") {
     document.getElementById("mainImage").src = IMAGE_URL;
   }
+
+  document.getElementById("mainImage").addEventListener("error", function(){
+    this.alt = "ছবি লোড হচ্ছে না — লিংক চেক করো (postimg.cc হলে Direct Link ব্যবহার করো)";
+    this.style.minHeight = "150px";
+  });
 
   /* ============================================================
      তোমার Telegram চ্যানেল লিংক
