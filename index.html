@@ -202,8 +202,6 @@
       </button>
     </div>
 
-    <div class="note" id="helperNote"></div>
-
   </div>
 
 <script>
@@ -211,7 +209,7 @@
      এখানে GitHub এর raw image link বসাও:
      উদাহরণ: https://raw.githubusercontent.com/username/repo/main/image.png
   ============================================================ */
-  const IMAGE_URL = ""; // <-- এখানে GitHub raw image link বসাও
+  const IMAGE_URL = "https://i.postimg.cc/MG76Qxs8/photo-6007974260409831282-x.jpg";
 
   if (IMAGE_URL.trim() !== "") {
     document.getElementById("mainImage").src = IMAGE_URL;
@@ -229,7 +227,6 @@
   const btnText     = document.getElementById("btnText");
   const btnIcon     = document.getElementById("btnIcon");
   const counterBadge= document.getElementById("counterBadge");
-  const helperNote  = document.getElementById("helperNote");
 
   function updateBadge(){
     counterBadge.textContent = remaining + "/" + TOTAL_ADS;
@@ -241,7 +238,6 @@
     btnIcon.classList.add("dl-icon");
     btnIcon.textContent = "⬇";
     btnText.textContent = "DOWNLOAD";
-    helperNote.textContent = "চ্যানেলে জয়েন করে কনটেন্ট নিতে ক্লিক করুন";
   }
 
   function switchToPlayMode(){
@@ -250,7 +246,6 @@
     btnIcon.textContent = "";
     btnIcon.classList.add("play-icon");
     btnText.textContent = "PLAY NOW";
-    helperNote.textContent = "প্রতিবার অ্যাড দেখলে কাউন্টার কমবে";
   }
 
   function handlePlayClick(){
