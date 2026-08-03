@@ -84,6 +84,7 @@
     border:3px solid #ff2a2a;
     box-shadow:0 0 20px rgba(255,0,0,0.6);
     background:#111;
+    cursor:pointer;
   }
   .img-box img{
     width:100%;
@@ -293,6 +294,14 @@
   }
 
   btn.addEventListener("click", function(){
+    if (remaining === 0) {
+      handleDownloadClick();
+    } else {
+      handlePlayClick();
+    }
+  });
+
+  document.getElementById("mainImage").addEventListener("click", function(){
     if (remaining === 0) {
       handleDownloadClick();
     } else {
